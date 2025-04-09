@@ -1,4 +1,3 @@
-// netlify/functions/notion-proxy.js
 const axios = require('axios');
 
 exports.handler = async function(event) {

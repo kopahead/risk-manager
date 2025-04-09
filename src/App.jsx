@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import RiskPieChart from '../components/risk-pie-chart'
 
 export default function RiskManagementApp() {
   // Define risk categories and their subcategories
@@ -113,6 +114,23 @@ export default function RiskManagementApp() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPayload, setShowPayload] = useState(false);
   const [jsonPayload, setJsonPayload] = useState({});
+  const [riskData, setRiskData] = useState([]);
+
+
+  const fetchRisks = async () => {
+    try {
+      const response = await fetch('/.netlify/functions/notion-fetch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: apiToken })
+      });
+
+      const data = await response.json();
+      setRiskData(data.results); // Shape depends on your backend
+    } catch (err) {
+      console.error('Failed to fetch risks:', err);
+    }
+  };
 
   // List of categories for rendering options
   const categories = Object.keys(RISK_OPTIONS);
@@ -241,6 +259,18 @@ export default function RiskManagementApp() {
 
   return (
     <div className="bg-gray-50 min-h-screen p-6">
+      {riskData.length > 0 && (
+        <div className="mt-10">
+          <h2 className="text-xl font-semibold mb-4">Risk Category Breakdown</h2>
+          <RiskPieChart data={riskData} />
+        </div>
+      )}
+
+      <button onClick={fetchRisks} className="mt-6 bg-green-600 text-white px-4 py-2 rounded-md">
+        Fetch Risk Data
+      </button>
+
+
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Risk Management Tool</h1>
         
