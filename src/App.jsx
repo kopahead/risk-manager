@@ -125,7 +125,6 @@ export default function RiskManagementApp() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          payload: {},
           token: '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'
         })
       });
