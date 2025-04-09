@@ -209,14 +209,15 @@ export default function RiskManagementApp() {
     setResponseMessage('');
 
     try {
-      const response = await fetch('https://api.notion.com/v1/pages', {
+      const response = await fetch('/.netlify/functions/notion-proxy', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${apiToken}`,
-          'Content-Type': 'application/json',
-          'Notion-Version': '2022-06-28'
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          payload: payload,
+          token: apiToken
+        })
       });
 
       const data = await response.json();
