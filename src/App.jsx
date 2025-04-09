@@ -131,7 +131,8 @@ export default function RiskManagementApp() {
 
       const data = await response.json();
 
-      setRiskData(data.results); // Shape depends on your backend
+      console.log(data.results);
+      // setRiskData(data.results); // Shape depends on your backend
     } catch (err) {
       console.error('Failed to fetch risks:', err);
     }
@@ -267,7 +268,7 @@ export default function RiskManagementApp() {
       {riskData.length > 0 && (
         <div className="mt-10">
           <h2 className="text-xl font-semibold mb-4">Risk Category Breakdown</h2>
-          <RiskPieChart data={riskData} />
+          {/* <RiskPieChart data={riskData} /> */}
         </div>
       )}
 
