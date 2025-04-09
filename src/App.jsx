@@ -121,8 +121,13 @@ export default function RiskManagementApp() {
     try {
       const response = await fetch('/.netlify/functions/notion-fetch', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: apiToken })
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          payload: {},
+          token: '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'
+        })
       });
 
       const data = await response.json();

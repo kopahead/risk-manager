@@ -1,12 +1,15 @@
-const { Client } = require('@notionhq/client');
+const axios = require('axios');
 
 exports.handler = async function(event) {
     const { token } = JSON.parse(event.body);
-    const notion = new Client({ auth: token });
 
     try {
-        const response = await notion.databases.query({
-            database_id: '1cfbe24c0c90801d80a3e3f220e4f50c'
+        const response = await axios.post('https://api.notion.com/v1/databases/1cfbe24c0c90801d80a3e3f220e4f50c/query', payload, {
+            headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Notion-Version': '2022-06-28'
+            }
         });
 
         return {
@@ -14,6 +17,7 @@ exports.handler = async function(event) {
             body: JSON.stringify({ results: response.results })
         };
     } catch (error) {
+        debugger
         return {
             statusCode: 500,
             body: JSON.stringify({ message: error.message })
