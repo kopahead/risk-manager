@@ -132,7 +132,7 @@ export default function RiskManagementApp() {
       const data = await response.json();
 
       console.log(data);
-      setRiskData(data.results); // Shape depends on your backend
+      setRiskData(data.results.results); // Shape depends on your backend
     } catch (err) {
       console.error('Failed to fetch risks:', err);
     }
