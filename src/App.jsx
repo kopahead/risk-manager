@@ -189,19 +189,26 @@ export default function RiskManagementApp() {
     }
   };
 
-  const fetchRisks = async () => {
-    try {
-      const response = await fetch('/.netlify/functions/notion-fetch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: apiToken })
-      });
-      const data = await response.json();
-      setRiskData(data.results.results);
-    } catch (err) {
-      console.error('Failed to fetch risks:', err);
-    }
-  };
+  useEffect(() => {
+    const fetchRisks = async () => {
+      try {
+        const response = await fetch("/.netlify/functions/notion-fetch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: localStorage.getItem("notionToken"),
+          }),
+        });
+
+        const data = await response.json();
+        setRiskData(data.results.results);
+      } catch (err) {
+        console.error("Failed to fetch risks:", err);
+      }
+    };
+
+    fetchRisks();
+  }, []);
 
   return (
     <div className="flex min-h-screen">
@@ -219,18 +226,27 @@ export default function RiskManagementApp() {
 
       <main className="flex-1 p-6">
         {activePage === 'list' && (
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Risk Management Tool</h1>
-            <button onClick={fetchRisks} className="bg-green-600 text-white px-4 py-2 rounded-md mb-6">
-              Fetch Risk Data
-            </button>
-            {responseMessage && (
-              <div className={`p-4 rounded-md ${responseMessage.includes('Error') ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`}>
-                {responseMessage}
-              </div>
-            )}
-          </div>
+            <div className="p-6">
+                <h1 className="text-2xl font-bold mb-4">Risk Analytics</h1>
+        
+                <div className="grid gap-4">
+                {riskData.map((risk) => (
+                    <div key={risk.id} className="bg-white p-4 rounded shadow">
+                    <h2 className="font-semibold">{risk.properties.Name?.title?.[0]?.text?.content || 'Unnamed Risk'}</h2>
+                    <p className="text-gray-600 text-sm">{risk.properties['Risk Category']?.rich_text?.[0]?.text?.content}</p>
+        
+                    <button
+                        onClick={() => window.location.href = `/risk/${risk.id}`}
+                        className="mt-2 text-sm text-blue-600 hover:underline"
+                    >
+                        View Details
+                    </button>
+                    </div>
+                ))}
+                </div>
+            </div>
         )}
+        
 
         {activePage === 'analytics' && riskData.length > 0 && (
           <div className="max-w-4xl mx-auto">
