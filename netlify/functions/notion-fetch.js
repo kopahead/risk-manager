@@ -17,7 +17,6 @@ exports.handler = async function(event) {
             body: JSON.stringify({ results: response.results })
         };
     } catch (error) {
-        debugger
         return {
             statusCode: 500,
             body: JSON.stringify({ message: error.message })
