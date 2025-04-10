@@ -18,7 +18,7 @@ export default function RiskList() {
     setIsLoading(true);
     
     try {
-      const response = await fetch("/.netlify/functions/notion-fetch", {
+      const response = await fetch("https://risk-manager-app.netlify.app/.netlify/functions/notion-fetch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
