@@ -1,45 +1,55 @@
-// components/SidebarNavigation.jsx
-import { Button } from "@/components/ui/button";
-import { LayoutList, PieChart, PlusCircle, LogIn, LogOut } from "lucide-react";
+import { NavLink } from 'react-router-dom';
 
-export default function SidebarNavigation({ activePage, setActivePage, onAddRisk, onLogin, onLogout, isAuthenticated }) {
+export default function SidebarNavigation({ onAddRisk, onLogin, onLogout, isAuthenticated }) {
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 p-4 flex flex-col justify-between">
-      <div>
-        <h2 className="text-xl font-bold mb-6">Navigation</h2>
-        <nav className="space-y-2">
-          <Button 
-            variant={activePage === 'list' ? 'default' : 'ghost'} 
-            onClick={() => setActivePage('list')} 
-            className="w-full justify-start"
-          >
-            <LayoutList className="mr-2 h-5 w-5" /> Risk List
-          </Button>
-          <Button 
-            variant={activePage === 'analytics' ? 'default' : 'ghost'} 
-            onClick={() => setActivePage('analytics')} 
-            className="w-full justify-start"
-          >
-            <PieChart className="mr-2 h-5 w-5" /> Analytics
-          </Button>
-        </nav>
-        <div className="mt-6">
-          <Button onClick={onAddRisk} className="w-full">
-            <PlusCircle className="mr-2 h-5 w-5" /> Add Risk
-          </Button>
-        </div>
+    <aside className="w-64 bg-gray-800 text-white p-4">
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold">Risk Management</h1>
       </div>
-      <div>
+      
+      <nav className="flex flex-col space-y-2">
+        <NavLink 
+          to="/"
+          className={({ isActive }) => 
+            `px-4 py-2 rounded transition ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
+          }
+          end
+        >
+          Risk List
+        </NavLink>
+        
+        <NavLink 
+          to="/analytics"
+          className={({ isActive }) => 
+            `px-4 py-2 rounded transition ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
+          }
+        >
+          Analytics
+        </NavLink>
+        
+        <button
+          onClick={onAddRisk}
+          className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition"
+        >
+          Add New Risk
+        </button>
+        
         {isAuthenticated ? (
-          <Button onClick={onLogout} variant="outline" className="w-full">
-            <LogOut className="mr-2 h-5 w-5" /> Logout
-          </Button>
+          <button
+            onClick={onLogout}
+            className="mt-2 w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition"
+          >
+            Logout
+          </button>
         ) : (
-          <Button onClick={onLogin} variant="outline" className="w-full">
-            <LogIn className="mr-2 h-5 w-5" /> Login
-          </Button>
+          <button
+            onClick={onLogin}
+            className="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
+          >
+            Login
+          </button>
         )}
-      </div>
+      </nav>
     </aside>
   );
 }
