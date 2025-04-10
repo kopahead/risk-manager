@@ -17,7 +17,7 @@ export default function AppLayout() {
   }, []);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="max-w-4xl mx-auto px-2">
       <SidebarNavigation
         onAddRisk={() => setShowRiskModal(true)}
         onLogin={() => setShowLoginModal(true)}
@@ -28,7 +28,7 @@ export default function AppLayout() {
         isAuthenticated={!!apiToken}
       />
 
-      <main className="flex-1 p-6">
+      <main className="mt-4">
         <Outlet />
       </main>
 

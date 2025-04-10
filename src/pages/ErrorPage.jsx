@@ -4,17 +4,14 @@ export default function ErrorPage() {
   const error = useRouteError();
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center p-8 max-w-md">
-        <h1 className="text-6xl font-bold text-red-500 mb-4">Oops!</h1>
-        <p className="text-xl mb-6">Sorry, an unexpected error has occurred.</p>
-        <p className="text-gray-600 mb-6">
-          {error?.statusText || error?.message || "Unknown error"}
-        </p>
-        <Link to="/" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-          Go back to homepage
-        </Link>
-      </div>
+    <div className="max-w-2xl mx-auto px-4 py-16">
+      <h1 className="text-2xl font-bold mb-4">Error</h1>
+      <p className="text-red-600 mb-4">
+        {error?.statusText || error?.message || "An unexpected error occurred."}
+      </p>
+      <Link to="/" className="text-blue-600 hover:underline">
+        Return to homepage
+      </Link>
     </div>
   );
 }

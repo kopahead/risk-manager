@@ -73,96 +73,111 @@ export default function RiskFormModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-4">Add New Risk</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50">
+      <div className="bg-white border border-gray-300 p-4 w-full max-w-md">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="font-bold">Add New Risk</h2>
+          <button onClick={onClose} className="text-gray-600 hover:text-gray-900">✕</button>
+        </div>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input 
-            value={riskName} 
-            onChange={(e) => setRiskName(e.target.value)} 
-            placeholder="Risk name" 
-            className="w-full p-2 border rounded" 
-          />
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Risk Name:</label>
+            <input 
+              value={riskName} 
+              onChange={(e) => setRiskName(e.target.value)} 
+              placeholder="Risk name" 
+              className="w-full p-1 border border-gray-300" 
+            />
+          </div>
           
-          <select 
-            value={selectedCategory} 
-            onChange={(e) => { 
-              setSelectedCategory(e.target.value); 
-              setSelectedSubcategory(''); 
-              setSelectedRiskType(''); 
-            }} 
-            className="w-full p-2 border rounded"
-          >
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {getEmojiForCategory(cat)} {cat}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Category:</label>
+            <select 
+              value={selectedCategory} 
+              onChange={(e) => { 
+                setSelectedCategory(e.target.value); 
+                setSelectedSubcategory(''); 
+                setSelectedRiskType(''); 
+              }} 
+              className="w-full p-1 border border-gray-300"
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {getEmojiForCategory(cat)} {cat}
+                </option>
+              ))}
+            </select>
+          </div>
           
-          <select 
-            value={selectedSubcategory} 
-            onChange={(e) => { 
-              setSelectedSubcategory(e.target.value); 
-              setSelectedRiskType(''); 
-            }} 
-            disabled={!selectedCategory} 
-            className="w-full p-2 border rounded"
-          >
-            <option value="">Select Subcategory</option>
-            {subcategories.map((sub) => (
-              <option key={sub} value={sub}>{sub}</option>
-            ))}
-          </select>
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Subcategory:</label>
+            <select 
+              value={selectedSubcategory} 
+              onChange={(e) => { 
+                setSelectedSubcategory(e.target.value); 
+                setSelectedRiskType(''); 
+              }} 
+              disabled={!selectedCategory} 
+              className="w-full p-1 border border-gray-300"
+            >
+              <option value="">Select Subcategory</option>
+              {subcategories.map((sub) => (
+                <option key={sub} value={sub}>{sub}</option>
+              ))}
+            </select>
+          </div>
           
-          <select 
-            value={selectedRiskType} 
-            onChange={(e) => setSelectedRiskType(e.target.value)} 
-            disabled={!selectedSubcategory} 
-            className="w-full p-2 border rounded"
-          >
-            <option value="">Select Risk Type</option>
-            {riskTypes.map((type) => (
-              <option key={type} value={type}>{type}</option>
-            ))}
-          </select>
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Risk Type:</label>
+            <select 
+              value={selectedRiskType} 
+              onChange={(e) => setSelectedRiskType(e.target.value)} 
+              disabled={!selectedSubcategory} 
+              className="w-full p-1 border border-gray-300"
+            >
+              <option value="">Select Risk Type</option>
+              {riskTypes.map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
           
-          <label className="flex items-center space-x-2">
+          <label className="flex items-center space-x-2 text-sm">
             <input 
               type="checkbox" 
               checked={showPayload} 
               onChange={(e) => setShowPayload(e.target.checked)} 
             />
-            <span>Show JSON payload (dry run)</span>
+            <span>Show JSON payload</span>
           </label>
           
           {responseMessage && (
-            <div className={`p-2 rounded ${responseMessage.includes('Error') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+            <div className={`p-2 text-sm ${responseMessage.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>
               {responseMessage}
             </div>
           )}
           
-          <div className="flex justify-end space-x-2 mt-4">
+          <div className="flex justify-end space-x-2 pt-2 border-t border-gray-200">
             <button 
               type="button" 
               onClick={onClose}
-              className="px-4 py-2 border rounded hover:bg-gray-100"
+              className="px-3 py-1 text-sm text-gray-600 hover:text-gray-900"
             >
               Cancel
             </button>
             <button 
               type="submit" 
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" 
+              className="px-3 py-1 text-sm bg-gray-800 text-white" 
               disabled={isLoading}
             >
-              {isLoading ? 'Submitting...' : showPayload ? 'Generate Payload' : 'Submit'}
+              {isLoading ? 'Submitting...' : showPayload ? 'Generate' : 'Submit'}
             </button>
           </div>
           
           {showPayload && (
-            <pre className="bg-gray-100 p-2 mt-2 rounded text-sm overflow-auto max-h-60">
+            <pre className="mt-2 p-2 border border-gray-300 text-xs overflow-auto max-h-60 bg-gray-50">
               {JSON.stringify(jsonPayload, null, 2)}
             </pre>
           )}

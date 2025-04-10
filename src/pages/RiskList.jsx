@@ -32,36 +32,50 @@ export default function RiskList() {
     fetchRisks();
   }, []);
 
-  if (isLoading) return <div className="text-center p-6">Loading risks...</div>;
-  if (error) return <div className="text-red-500 p-6">Error: {error}</div>;
+  if (isLoading) return <div className="py-4">Loading risks...</div>;
+  if (error) return <div className="py-4 text-red-600">Error: {error}</div>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Risk Analytics</h1>
+    <div>
+      <h1 className="text-lg font-bold mb-4">Risk Registry</h1>
       
-      <div className="grid gap-4">
-        {riskData.length > 0 ? (
-          riskData.map((risk) => (
-            <div key={risk.id} className="bg-white p-4 rounded shadow">
-              <h2 className="font-semibold">
-                {risk.properties.Name?.title?.[0]?.text?.content || 'Unnamed Risk'}
-              </h2>
-              <p className="text-gray-600 text-sm">
-                {risk.properties['Risk Category']?.rich_text?.[0]?.text?.content}
-              </p>
-              
-              <Link
-                to={`/risk/${risk.id}`}
-                className="mt-2 text-sm text-blue-600 hover:underline inline-block"
-              >
-                View Details
-              </Link>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500">No risks found. Add your first risk using the button in the sidebar.</p>
-        )}
-      </div>
+      <table className="w-full border-collapse">
+        <thead>
+          <tr>
+            <th className="text-left py-2 border-b border-gray-300">Risk Name</th>
+            <th className="text-left py-2 border-b border-gray-300">Category</th>
+            <th className="text-left py-2 border-b border-gray-300">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {riskData.length > 0 ? (
+            riskData.map((risk) => (
+              <tr key={risk.id} className="hover:bg-gray-50">
+                <td className="py-2 border-b border-gray-200">
+                  <Link
+                    to={`/risk/${risk.id}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {risk.properties.Name?.title?.[0]?.text?.content || 'Unnamed Risk'}
+                  </Link>
+                </td>
+                <td className="py-2 border-b border-gray-200 text-gray-600">
+                  {risk.properties['Risk Category']?.rich_text?.[0]?.text?.content}
+                </td>
+                <td className="py-2 border-b border-gray-200 text-gray-600">
+                  {risk.properties['Risk Type']?.rich_text?.[0]?.text?.content}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3" className="py-4 text-gray-500">
+                No risks found. Add your first risk using the "Add Risk" button.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }
