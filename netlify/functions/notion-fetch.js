@@ -1,10 +1,15 @@
 const axios = require('axios');
 
 exports.handler = async function(event) {
-    const { token } = JSON.parse(event.body);
+    const { token, start_cursor, page_size } = JSON.parse(event.body);
 
+    const payload = {
+        start_cursor,
+        page_size,
+    };
+    
     try {
-        const response = await axios.post('https://api.notion.com/v1/databases/1cfbe24c0c90801d80a3e3f220e4f50c/query', {}, {
+        const response = await axios.post('https://api.notion.com/v1/databases/1cfbe24c0c90801d80a3e3f220e4f50c/query', payload, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
